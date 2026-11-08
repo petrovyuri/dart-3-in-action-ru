@@ -1,0 +1,214 @@
+:root {
+  color-scheme: dark;
+  --bg: #0a0e1a;
+  --panel: #161b2e;
+  --border: #2a3150;
+  --text: #f5f7fa;
+  --muted: #b0b9cc;
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --orange: #fb923c;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    16px/1.6 system-ui,
+    sans-serif;
+}
+main {
+  max-width: 1040px;
+  margin: auto;
+  padding: 28px 24px 48px;
+}
+a {
+  color: var(--cyan);
+  text-underline-offset: 4px;
+}
+h1 {
+  text-align: center;
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.2;
+  margin: 10px 0 16px;
+}
+h2 {
+  text-align: center;
+  font-size: 21px;
+  line-height: 1.3;
+}
+p {
+  max-width: 76ch;
+}
+.eyebrow {
+  color: var(--cyan);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.muted {
+  color: var(--muted);
+}
+.panel {
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 18px;
+  margin: 24px 0;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+button {
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  background: #222b45;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover {
+  border-color: var(--cyan);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button.primary {
+  color: var(--bg);
+  background: var(--cyan);
+  font-weight: 650;
+}
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+ol.commands {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.command {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.command.active {
+  border-color: var(--orange);
+  background: #37271c;
+}
+.number {
+  color: var(--cyan);
+  font:
+    16px ui-monospace,
+    monospace;
+}
+.command-name {
+  flex: 1;
+}
+.command button {
+  padding: 4px 10px;
+}
+.state {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 20px 0;
+}
+.state div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 8px;
+}
+.state dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+.state dd {
+  margin: 4px 0 0;
+  font-weight: 600;
+}
+.state .on {
+  color: var(--green);
+}
+.console {
+  min-height: 140px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    14px/1.8 ui-monospace,
+    Consolas,
+    monospace;
+}
+#status {
+  min-height: 3.2em;
+  color: var(--orange);
+}
+.card {
+  display: block;
+  margin: 20px 0;
+  text-decoration: none;
+}
+.card h2 {
+  color: var(--text);
+}
+.card p {
+  color: var(--muted);
+}
+iframe.lesson-preview {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  min-height: 480px;
+}
+select {
+  max-width: 100%;
+  padding: 12px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+@media (max-width: 620px) {
+  .console {
+    min-height: 80px;
+  }
+  main {
+    padding: 18px 14px 30px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .panel {
+    padding: 15px;
+  }
+  .controls button {
+    flex: 1 1 120px;
+  }
+  .command {
+    font-size: 14px;
+    gap: 8px;
+  }
+  .state {
+    margin: 14px 0;
+  }
+}
