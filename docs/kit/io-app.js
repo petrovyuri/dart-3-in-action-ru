@@ -4,10 +4,10 @@ import {
   inputStep,
   submitInput,
   dartString,
-} from "./logic.js";
+} from "./io-logic.js";
 
 const $ = (id) => document.getElementById(id);
-let mode = "output";
+const output = document.body.dataset.ioMode === "output";
 let state = initialState();
 const calls = () =>
   [1, 2].map((index) => ({
@@ -16,11 +16,6 @@ const calls = () =>
   }));
 
 function render() {
-  const output = mode === "output";
-  $("settings").hidden = !output;
-  $("input-panel").hidden = output;
-  $("mode-output").setAttribute("aria-pressed", String(output));
-  $("mode-input").setAttribute("aria-pressed", String(!output));
   const statements = output
     ? calls().map(
         (call) => `  stdout.${call.method}(${dartString(call.text)});`,
@@ -49,14 +44,18 @@ function render() {
     }),
   );
   $("output").textContent = state.output;
-  $("value").textContent =
-    state.input === null ? "Ещё не получено" : dartString(state.input);
-  $("stdin").disabled = !state.waiting;
-  $("send").disabled = !state.waiting;
+  if (!output) {
+    $("value").textContent =
+      state.input === null ? "Ещё не получено" : dartString(state.input);
+    $("stdin").disabled = !state.waiting;
+    $("send").disabled = !state.waiting;
+  }
   $("step").disabled = state.done || state.waiting;
   $("run").disabled = state.done || state.waiting;
   $("status").textContent = state.done
-    ? "Программа завершена. Можно изменить значения или начать сначала."
+    ? output
+      ? "Программа завершена. Можно изменить значения или начать сначала."
+      : "Программа завершена. Можно начать сначала."
     : state.waiting
       ? "Программа ждёт строку. Введите текст в поле stdin и передайте его. Можно передать и пустую строку."
       : state.position === 0
@@ -68,22 +67,26 @@ function render() {
 
 function reset() {
   state = initialState();
-  $("stdin").value = "";
+  if (!output) $("stdin").value = "";
   render();
 }
 
 function step() {
-  state = mode === "output" ? outputStep(state, calls()) : inputStep(state);
+  state = output ? outputStep(state, calls()) : inputStep(state);
 }
 
-for (const name of ["output", "input"]) {
-  $(`mode-${name}`).addEventListener("click", () => {
-    mode = name;
-    reset();
+if (output) {
+  for (const id of ["text-1", "text-2", "method-1", "method-2"]) {
+    $(id).addEventListener("input", reset);
+  }
+} else {
+  $("input-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!state.waiting) return;
+    state = submitInput(state, $("stdin").value);
+    render();
+    $("step").focus();
   });
-}
-for (const id of ["text-1", "text-2", "method-1", "method-2"]) {
-  $(id).addEventListener("input", reset);
 }
 $("step").addEventListener("click", () => {
   step();
@@ -96,11 +99,4 @@ $("run").addEventListener("click", () => {
   if (state.waiting) $("stdin").focus();
 });
 $("reset").addEventListener("click", reset);
-$("input-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (!state.waiting) return;
-  state = submitInput(state, $("stdin").value);
-  render();
-  $("step").focus();
-});
 render();
