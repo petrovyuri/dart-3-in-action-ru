@@ -1,0 +1,9 @@
+analyzer:
+  errors:
+    unused_local_variable: error
+linter:
+  rules:
+    - avoid_dynamic_calls
+    - cancel_subscriptions
+    - close_sinks
+    - unawaited_futures

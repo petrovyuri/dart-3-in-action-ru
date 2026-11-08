@@ -1,0 +1,40 @@
+name: Проверки
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Проверки сайта и кода
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получить код
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Подготовить Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: 3.11.0
+      - name: Проверить сайт
+        run: python3 tools/check_site.py
+      - name: Подготовить пример урока 1.4
+        working-directory: examples/module-01
+        run: dart pub get
+      - name: Подготовить игру
+        working-directory: game
+        run: dart pub get
+      - name: Проверить форматирование Dart
+        run: dart format --output=none --set-exit-if-changed examples game
+      - name: Проверить пример урока 1.4
+        working-directory: examples/module-01
+        run: dart analyze
+      - name: Проверить игру
+        working-directory: game
+        run: dart analyze
+      - name: Запустить тесты игры
+        working-directory: game
+        run: dart test
