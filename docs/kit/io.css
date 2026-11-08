@@ -78,10 +78,69 @@ select {
   display: none !important;
 }
 body.embedded .settings {
-  margin: 12px 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+body.embedded[data-io-mode="output"] .grid {
+  grid-template-columns: 1fr;
+}
+body.embedded label {
+  gap: 3px;
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+body.embedded input,
+body.embedded select {
+  padding: 6px;
+  min-height: 32px;
+  font:
+    13px/1.3 system-ui,
+    sans-serif;
+}
+body.embedded .program {
+  padding: 8px;
+  margin: 0 0 8px;
+  overflow: visible;
+  font:
+    13px/1.4 ui-monospace,
+    Consolas,
+    monospace;
+}
+body.embedded .line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 0 2px;
+}
+body.embedded .line.scaffold {
+  display: none;
 }
 body.embedded .output {
-  min-height: 120px;
+  min-height: 54px;
+  padding: 8px;
+  margin: 0;
+  font:
+    13px/1.4 ui-monospace,
+    Consolas,
+    monospace;
+}
+.io-flow {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+body.embedded #input-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+body.embedded #input-form label {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+body.embedded .value {
+  font-size: 13px;
 }
 @media (max-width: 620px) {
   .settings {
