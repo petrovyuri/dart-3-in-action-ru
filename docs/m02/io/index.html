@@ -3,214 +3,26 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>2.3 Чтение и запись | Dart 3 в действии</title>
+    <title>2.3 Чтение и запись</title>
     <link rel="stylesheet" href="../../kit/course.css" />
-    <style>
-      main {
-        max-width: 1100px;
-      }
-      .tabs {
-        justify-content: center;
-        margin: 20px 0;
-      }
-      .tabs [aria-pressed="true"] {
-        border-color: var(--cyan);
-        color: var(--cyan);
-      }
-      .settings {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin: 20px 0;
-      }
-      label {
-        display: grid;
-        gap: 6px;
-        margin-bottom: 12px;
-      }
-      input {
-        width: 100%;
-        min-width: 0;
-        background: var(--bg);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 12px;
-        font: inherit;
-      }
-      select {
-        width: 100%;
-      }
-      .program {
-        margin: 0 0 20px;
-        padding: 12px;
-        border-radius: 8px;
-        background: var(--bg);
-        overflow-x: auto;
-        font:
-          14px/1.9 ui-monospace,
-          Consolas,
-          monospace;
-      }
-      .line {
-        white-space: pre;
-        padding: 0 6px;
-        border-left: 3px solid transparent;
-      }
-      .line.active {
-        border-color: var(--orange);
-        background: #37271c;
-      }
-      .line.done {
-        color: var(--green);
-      }
-      .output {
-        min-height: 160px;
-        margin: 12px 0;
-        padding: 16px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--bg);
-        white-space: pre-wrap;
-        overflow-wrap: anywhere;
-        font:
-          16px/1.8 ui-monospace,
-          Consolas,
-          monospace;
-      }
-      .output::after {
-        content: "▌";
-        color: var(--cyan);
-      }
-      .value {
-        overflow-wrap: anywhere;
-        color: var(--green);
-        font-family: ui-monospace, monospace;
-      }
-      #status {
-        margin-bottom: 0;
-      }
-      [hidden] {
-        display: none !important;
-      }
-      @media (max-width: 620px) {
-        .settings {
-          grid-template-columns: 1fr;
-          gap: 0;
-        }
-        .program {
-          font-size: 12px;
-        }
-      }
-    </style>
   </head>
   <body>
     <main>
       <a href="../../">Интерактивные уроки</a>
-      <p class="eyebrow">2.3 Чтение и запись</p>
-      <h1 style="text-align: center">Как данные попадают в консоль</h1>
-      <p>
-        Измените текст и выполните программу по шагам. Сначала сравните
-        <code>write()</code> и <code>writeln()</code>, затем попробуйте
-        прочитать строку.
-      </p>
-      <noscript
-        ><p>Для работы тренажёра включите JavaScript в браузере.</p></noscript
-      >
-      <div class="controls tabs" aria-label="Примеры">
-        <button id="mode-output" type="button" aria-pressed="true">
-          Вывод: write и writeln
-        </button>
-        <button id="mode-input" type="button" aria-pressed="false">
-          Ввод: readLineSync
-        </button>
-      </div>
-      <section id="settings" class="panel" aria-labelledby="settings-title">
-        <h2 id="settings-title" style="text-align: center">
-          Что будем выводить
-        </h2>
-        <div class="settings">
-          <div>
-            <label
-              >Первый текст<input id="text-1" value="Привет" maxlength="80"
-            /></label>
-            <label
-              >Первый вызов<select id="method-1">
-                <option value="write">stdout.write()</option>
-                <option value="writeln">stdout.writeln()</option>
-              </select></label
-            >
-          </div>
-          <div>
-            <label
-              >Второй текст<input id="text-2" value="мир" maxlength="80"
-            /></label>
-            <label
-              >Второй вызов<select id="method-2">
-                <option value="write">stdout.write()</option>
-                <option value="writeln" selected>stdout.writeln()</option>
-              </select></label
-            >
-          </div>
-        </div>
-        <p class="muted">
-          При изменении текста или метода выполнение начинается сначала. Пробелы
-          между словами программа сама не добавляет.
+      <h1 style="text-align: center">2.3 Чтение и запись</h1>
+      <a class="panel card" href="../write/">
+        <h2 style="text-align: center">write: вывод в консоль</h2>
+        <p>
+          Сравните write() и writeln(), меняя текст и выполняя программу по
+          шагам.
         </p>
-      </section>
-      <div class="grid">
-        <section class="panel" aria-labelledby="code-title">
-          <h2 id="code-title" style="text-align: center">Программа</h2>
-          <div
-            id="program"
-            class="program"
-            role="region"
-            aria-label="Код программы"
-          ></div>
-          <div class="controls">
-            <button id="step" class="primary" type="button">
-              Следующий шаг
-            </button>
-            <button id="run" type="button">Выполнить всё</button>
-            <button id="reset" type="button">Сначала</button>
-          </div>
-          <p id="status" role="status" aria-live="polite"></p>
-        </section>
-        <section class="panel" aria-labelledby="output-title">
-          <h2 id="output-title" style="text-align: center">
-            Стандартный вывод stdout
-          </h2>
-          <div
-            id="output"
-            class="output"
-            role="region"
-            aria-label="Вывод программы"
-          ></div>
-          <p class="muted">Курсор показывает, где появится следующий текст.</p>
-          <div id="input-panel" hidden>
-            <h2 style="text-align: center">Стандартный ввод stdin</h2>
-            <form id="input-form">
-              <label
-                >Строка для ввода<input
-                  id="stdin"
-                  maxlength="80"
-                  autocomplete="off"
-                  disabled
-              /></label>
-              <button id="send" type="submit" disabled>Передать строку</button>
-            </form>
-            <p>
-              Значение <code>input</code>:
-              <span id="value" class="value">Ещё не получено</span>
-            </p>
-          </div>
-        </section>
-      </div>
-      <p class="muted">
-        Тренажёр показывает выполнение этих примеров. Вводимый текст хранится
-        только на этой странице.
-      </p>
+      </a>
+      <a class="panel card" href="../read/">
+        <h2 style="text-align: center">read: чтение строки</h2>
+        <p>
+          Передайте строку в stdin и проследите её путь до переменной и вывода.
+        </p>
+      </a>
     </main>
-    <script type="module" src="./app.js"></script>
   </body>
 </html>
