@@ -1,4 +1,5 @@
 import { LABELS, runAlgorithm } from "./logic.js";
+import "../../kit/embed.js";
 
 const $ = (id) => document.getElementById(id);
 let commands = ["take", "open", "enter"];

@@ -5,6 +5,7 @@ import {
   submitInput,
   dartString,
 } from "./io-logic.js";
+import "./embed.js";
 
 const $ = (id) => document.getElementById(id);
 const output = document.body.dataset.ioMode === "output";

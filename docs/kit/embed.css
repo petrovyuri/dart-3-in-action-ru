@@ -1,0 +1,13 @@
+body.embedded .standalone {
+  display: none;
+}
+body.embedded main {
+  max-width: none;
+  padding: 12px;
+}
+body.embedded .grid {
+  margin: 12px 0;
+}
+body.embedded .panel {
+  padding: 14px;
+}
