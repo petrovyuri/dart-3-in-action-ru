@@ -5,9 +5,13 @@ import {
   submitInput,
   dartString,
 } from "./io-logic.js";
+import "./embed.js";
 
 const $ = (id) => document.getElementById(id);
 const output = document.body.dataset.ioMode === "output";
+if (document.body.classList.contains("embedded")) {
+  $("code-title").textContent = "Команды";
+}
 let state = initialState();
 const calls = () =>
   [1, 2].map((index) => ({
@@ -33,6 +37,7 @@ function render() {
       const command = index - 3;
       line.className =
         "line" +
+        (command < 0 || command >= statements.length ? " scaffold" : "") +
         (command >= 0 && command < statements.length
           ? command < state.position
             ? " done"
@@ -54,15 +59,15 @@ function render() {
   $("run").disabled = state.done || state.waiting;
   $("status").textContent = state.done
     ? output
-      ? "Программа завершена. Можно изменить значения или начать сначала."
+      ? "Готово. Измените параметры или начните сначала."
       : "Программа завершена. Можно начать сначала."
     : state.waiting
-      ? "Программа ждёт строку. Введите текст в поле stdin и передайте его. Можно передать и пустую строку."
+      ? "Ожидание stdin. Введите строку и нажмите «Передать»."
       : state.position === 0
-        ? "Программа ещё не запущена. Выполните первую команду."
+        ? "Нажмите «Шаг» или «Выполнить всё»."
         : !output && state.position === 2
-          ? "Строка сохранена в input. Следующая команда выведет её значение."
-          : "Следующая команда выделена в коде.";
+          ? "Строка в input. Следующий шаг выведет её."
+          : "Следующая команда выделена.";
 }
 
 function reset() {
@@ -100,3 +105,4 @@ $("run").addEventListener("click", () => {
 });
 $("reset").addEventListener("click", reset);
 render();
+document.documentElement.dataset.ready = "1";

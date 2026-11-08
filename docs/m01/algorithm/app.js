@@ -1,4 +1,5 @@
 import { LABELS, runAlgorithm } from "./logic.js";
+import "../../kit/embed.js";
 
 const $ = (id) => document.getElementById(id);
 let commands = ["take", "open", "enter"];
@@ -67,9 +68,9 @@ function render() {
     .join("\n");
   $("status").textContent =
     position === 0
-      ? "Алгоритм ещё не запущен. Какая команда должна быть первой?"
+      ? "Нажмите «Шаг» или «Выполнить всё»."
       : current.error
-        ? `Выполнение остановлено на команде ${position}. Измените порядок и запустите снова.`
+        ? `Команда ${position} невыполнима. Измените порядок и начните сначала.`
         : finished
           ? "Герой внутри. Все три команды выполнены."
           : `Выполнено команд: ${position} из 3.`;
@@ -100,3 +101,4 @@ $("correct").addEventListener("click", () => {
   render();
 });
 render();
+document.documentElement.dataset.ready = "1";
