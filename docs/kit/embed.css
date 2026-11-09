@@ -7,7 +7,9 @@ body.embedded {
     sans-serif;
 }
 body.embedded main {
-  max-width: 720px;
+  max-width: none;
+  width: 100%;
+  margin: 0;
   padding: 10px;
 }
 body.embedded .grid {
