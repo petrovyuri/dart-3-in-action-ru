@@ -3,39 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dart 3 в действии | Интерактивы и код</title>
-    <link rel="stylesheet" href="kit/course.css" />
+    <title>Dart 3 в действии: интерактивы</title>
+    <link rel="stylesheet" href="kit/kit.css?v=llm-1" />
+    <style>
+      body {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .card {
+        display: block;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .card:hover,
+      .card:focus-visible {
+        border-color: var(--cyan);
+      }
+      .card h2 {
+        margin: 2px 0 4px;
+        font-size: 16px;
+        text-align: center;
+      }
+      .card p {
+        margin: 0;
+        text-align: center;
+      }
+      .about {
+        margin: 0 0 14px;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
-    <main>
-      <p class="eyebrow">Dart 3 в действии</p>
-      <h1>Интерактивные примеры и код курса</h1>
-      <p class="muted">Примеры к урокам курса.</p>
-      <a class="panel card" href="m01/algorithm/">
-        <p class="eyebrow">Интерактивный пример · урок 2</p>
-        <h2>Ключ, дверь и порядок команд</h2>
-        <p>Измените алгоритм и проследите, как меняется состояние игры.</p>
-      </a>
-      <a class="panel card" href="m02/write/">
-        <p class="eyebrow">Интерактивный пример · 2.3 Чтение и запись</p>
-        <h2 style="text-align: center">write: вывод в консоль</h2>
-        <p>
-          Сравните write() и writeln(), меняя текст и выполняя программу по
-          шагам.
-        </p>
-      </a>
-      <a class="panel card" href="m02/read/">
-        <p class="eyebrow">Интерактивный пример · 2.3 Чтение и запись</p>
-        <h2 style="text-align: center">read: чтение строки</h2>
-        <p>
-          Передайте строку в stdin и проследите её путь до переменной и вывода.
-        </p>
-      </a>
-      <p>
-        <a href="https://stepik.org/course/120892/syllabus"
-          >Открыть курс на Stepik</a
-        >
+    <p class="eyebrow">Dart 3 в действии</p>
+    <h1 style="text-align: center">Интерактивные примеры курса</h1>
+    <p class="about muted">
+      Каждый пример встроен в свой урок на Stepik. Здесь их можно открыть
+      отдельно.
+    </p>
+    <a class="panel card" href="m01/algorithm/">
+      <p class="eyebrow">Модуль 1 · урок 2</p>
+      <h2 style="text-align: center">Важен ли порядок команд?</h2>
+      <p class="muted">
+        Переставьте команды героя и проследите, что произойдёт с ключом и
+        дверью.
       </p>
-    </main>
+    </a>
+    <a class="panel card" href="m02/write/">
+      <p class="eyebrow">Модуль 2 · урок 3</p>
+      <h2 style="text-align: center">write() и writeln()</h2>
+      <p class="muted">
+        Выполните программу по шагам и посмотрите, где окажется следующий текст.
+      </p>
+    </a>
+    <a class="panel card" href="m02/read/">
+      <p class="eyebrow">Модуль 2 · урок 3</p>
+      <h2 style="text-align: center">stdin.readLineSync()</h2>
+      <p class="muted">
+        Введите строку в консоли и проследите её путь до переменной input.
+      </p>
+    </a>
+    <p class="about">
+      <a class="home-link" href="https://stepik.org/course/120892/syllabus"
+        >Курс «Dart 3 в действии» на Stepik</a
+      >
+    </p>
   </body>
 </html>

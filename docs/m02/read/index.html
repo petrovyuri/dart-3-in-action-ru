@@ -3,86 +3,38 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>read: чтение строки | 2.3 Чтение и запись</title>
-    <link rel="stylesheet" href="../../kit/course.css" />
-    <link rel="stylesheet" href="../../kit/io.css?v=height-2" />
-    <link rel="stylesheet" href="../../kit/embed.css?v=height-2" />
+    <title>stdin.readLineSync()</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
   </head>
-  <body data-io-mode="input">
-    <main>
-      <header class="standalone">
-        <a href="../../">Интерактивные уроки</a>
-        <p class="eyebrow">2.3 Чтение и запись</p>
-        <h1 style="text-align: center">read: чтение строки</h1>
-        <p>
-          Выполните программу по шагам. Когда она остановится на readLineSync(),
-          передайте строку через stdin. Проследите, как её значение попадёт в
-          input и появится в консоли.
-        </p>
-      </header>
-      <noscript
-        ><p>Для работы тренажёра включите JavaScript в браузере.</p></noscript
-      >
+  <body>
+    <p class="eyebrow">Модуль 2 · урок 3</p>
+    <h1 style="text-align: center">Как строка попадает в input?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
 
-      <div class="grid">
-        <section class="panel" aria-labelledby="code-title">
-          <h2 id="code-title" style="text-align: center">Программа</h2>
-          <div
-            id="program"
-            class="program"
-            role="region"
-            aria-label="Код программы"
-          ></div>
-          <div class="controls">
-            <button id="step" class="primary" type="button">Шаг</button>
-            <button id="run" type="button">Выполнить всё</button>
-            <button id="reset" type="button">Сначала</button>
-          </div>
-          <p id="status" role="status" aria-live="polite">
-            Нажмите «Шаг» или «Выполнить всё».
-          </p>
-        </section>
-        <div class="io-flow">
-          <section class="panel" id="input-panel" aria-labelledby="input-title">
-            <h2 id="input-title" style="text-align: center">
-              Стандартный ввод stdin
-            </h2>
-            <form id="input-form">
-              <label
-                >Строка (до 24)<input
-                  id="stdin"
-                  maxlength="24"
-                  autocomplete="off"
-                  disabled
-              /></label>
-              <button id="send" type="submit" disabled>Передать</button>
-            </form>
-            <p class="input-value">
-              Значение <code>input</code>:
-              <span id="value" class="value">Ещё не получено</span>
-            </p>
-          </section>
-          <section class="panel" aria-labelledby="output-title">
-            <h2 id="output-title" style="text-align: center">
-              Стандартный вывод stdout
-            </h2>
-            <div
-              id="output"
-              class="output"
-              role="region"
-              aria-label="Вывод программы"
-            ></div>
-          </section>
-        </div>
-      </div>
-      <footer class="standalone">
-        <p><a href="../write/">Вернуться к выводу в консоль</a></p>
-        <p class="muted">
-          Тренажёр показывает выполнение этих примеров. Вводимый текст хранится
-          только на этой странице.
+    <div class="panel row">
+      <button type="button" id="step">шаг</button>
+      <button type="button" class="btn-play" id="play">▶ до конца</button>
+      <button type="button" id="reset">сброс</button>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">Программа</p>
+        <ol class="code fill" id="code" aria-label="Код программы"></ol>
+        <p class="readout">
+          <span class="muted">input =</span> <span id="value"></span>
         </p>
-      </footer>
-    </main>
-    <script type="module" src="../../kit/io-app.js?v=height-2"></script>
+      </div>
+      <div class="work__side">
+        <p class="label">Консоль</p>
+        <div class="console fill" id="console" aria-label="Консоль"></div>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=llm-1"></script>
   </body>
 </html>

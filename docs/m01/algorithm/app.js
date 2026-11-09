@@ -1,106 +1,175 @@
 import { LABELS, runAlgorithm } from "./logic.js";
-import "../../kit/embed.js";
+import { autoRun, el, presets, ready } from "../../kit/ui.js";
 
+const PRESETS = [
+  { label: "пример урока", value: ["take", "open", "enter"] },
+  { label: "дверь первой", value: ["open", "take", "enter"] },
+];
 const $ = (id) => document.getElementById(id);
-const embedded = document.body.classList.contains("embedded");
-let commands = ["take", "open", "enter"];
-let position = 0;
+let commands = [...PRESETS[0].value];
+let result = runAlgorithm(commands);
+let position = 0; // сколько команд уже выполнено
 
-function changeOrder(index, delta) {
+function restart() {
+  player.stop();
+  result = runAlgorithm(commands);
+  position = 0;
+  render();
+}
+
+function move(index, delta) {
   [commands[index], commands[index + delta]] = [
     commands[index + delta],
     commands[index],
   ];
-  position = 0;
-  render();
-  const button = document.getElementById(`move-${index + delta}-${delta}`);
-  if (button.disabled) {
-    document.getElementById(`move-${index + delta}-${-delta}`).focus();
-  } else {
-    button.focus();
-  }
+  presetBar.setActive(
+    PRESETS.findIndex((p) => p.value.join() === commands.join()),
+  );
+  restart();
+  // Фокус остаётся на той же стрелке у переехавшей команды, если она ещё доступна.
+  const target = $(`move-${index + delta}-${delta}`);
+  (target.disabled ? $(`move-${index + delta}-${-delta}`) : target).focus();
+}
+
+function commandRow(command, index) {
+  const done = index < position;
+  const event = result.trace[index];
+  const failed = done && event.error !== null;
+  const skipped =
+    result.error !== null &&
+    index >= result.trace.length &&
+    position >= result.trace.length;
+  const mark = done ? (failed ? "✗" : "✓") : "";
+  const buttons = [
+    [-1, "↑", "выше"],
+    [1, "↓", "ниже"],
+  ].map(([delta, text, where]) =>
+    el(
+      "button",
+      {
+        type: "button",
+        id: `move-${index}-${delta}`,
+        "aria-label": `${LABELS[command]}: ${where}`,
+        disabled: index + delta < 0 || index + delta >= commands.length,
+        onclick: () => move(index, delta),
+      },
+      text,
+    ),
+  );
+  return el(
+    "li",
+    {
+      class: `cmd${index === position - 1 ? " is-now" : ""}${skipped ? " is-skipped" : ""}`,
+    },
+    el("span", { class: "cmd__num" }, `${index + 1}.`),
+    el("span", { class: "cmd__name" }, LABELS[command]),
+    el(
+      "span",
+      { class: `cmd__mark ${failed ? "bad" : "good"}`, "aria-hidden": "true" },
+      mark,
+    ),
+    ...buttons,
+  );
+}
+
+function scene(state, error) {
+  const hero = el("span", { class: "hero", "aria-hidden": "true" }, "🧍");
+  const key = el("span", { class: "small", "aria-hidden": "true" }, "🔑");
+  const outside = [];
+  const inside = [];
+  (state.inside ? inside : outside).push(hero);
+  if (state.hasKey) (state.inside ? inside : outside).push(key);
+  else outside.push(key);
+  const zone = (name, actors, cls = "", nameCls = "") =>
+    el(
+      "div",
+      { class: `zone ${cls}` },
+      el("div", { class: "actors" }, ...actors),
+      el("span", { class: `zone__name ${nameCls}` }, name),
+    );
+  return [
+    zone("снаружи", outside),
+    zone(
+      state.doorOpen ? "открыта" : "заперта",
+      [el("span", { "aria-hidden": "true" }, state.doorOpen ? "🚪" : "🚪🔒")],
+      error ? "is-bad" : "",
+      state.doorOpen ? "on" : "",
+    ),
+    zone(
+      "комната",
+      inside,
+      state.inside ? "is-good" : "",
+      state.inside ? "on" : "",
+    ),
+  ];
 }
 
 function render() {
-  const result = runAlgorithm(commands);
-  const events = result.trace.slice(0, position);
-  const current = events.at(-1);
   const finished = position >= result.trace.length;
-  $("commands").replaceChildren(
-    ...commands.map((command, index) => {
-      const row = document.createElement("li");
-      row.className = `command${current && index === position - 1 ? " active" : ""}`;
-      const number = document.createElement("span");
-      number.className = "number";
-      number.textContent = `${index + 1}.`;
-      const label = document.createElement("span");
-      label.className = "command-name";
-      label.textContent =
-        embedded && events[index] ? events[index].message : LABELS[command];
-      row.append(number, label);
-      for (const [delta, text] of [
-        [-1, "↑"],
-        [1, "↓"],
-      ]) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.id = `move-${index}-${delta}`;
-        button.textContent = text;
-        button.disabled = index + delta < 0 || index + delta >= commands.length;
-        button.setAttribute(
-          "aria-label",
-          `${LABELS[command]}: ${delta < 0 ? "выше" : "ниже"}`,
-        );
-        button.addEventListener("click", () => changeOrder(index, delta));
-        row.append(button);
-      }
-      return row;
-    }),
+  const current = result.trace[position - 1];
+  const state = current ?? {
+    hasKey: false,
+    doorOpen: false,
+    inside: false,
+    error: null,
+  };
+  $("commands").replaceChildren(...commands.map(commandRow));
+  $("journal").replaceChildren(
+    ...result.trace
+      .slice(0, position)
+      .map((event) =>
+        el("li", { class: event.error ? "bad" : "" }, event.message),
+      ),
   );
-  for (const [id, value, yes, no] of [
-    ["key", current?.hasKey, "У героя", "На земле"],
-    ["door", current?.doorOpen, "Открыта", "Заперта"],
-    ["hero", current?.inside, "В комнате", "Снаружи"],
-  ]) {
-    $(id).textContent = value ? yes : no;
-    $(id).classList.toggle("on", Boolean(value));
-  }
-  $("console").textContent = events
-    .map((event, index) => `${index + 1}. ${event.message}`)
-    .join("\n");
-  $("status").textContent =
-    position === 0
-      ? "Нажмите «Шаг» или «Выполнить всё»."
-      : current.error
-        ? "Измените порядок и начните сначала."
-        : finished
-          ? "Герой внутри. Готово."
-          : `Выполнено команд: ${position} из 3.`;
+  $("scene").replaceChildren(...scene(state, state.error));
+  $("scene").setAttribute(
+    "aria-label",
+    `Ключ ${state.hasKey ? "у героя" : "на земле"}, дверь ${state.doorOpen ? "открыта" : "заперта"}, герой ${state.inside ? "в комнате" : "снаружи"}.`,
+  );
   $("step").disabled = finished;
-  $("run").disabled = finished;
+  $("play").disabled = finished && !player.active();
+  $("counter").textContent = !finished
+    ? `шаг ${position} из ${commands.length}`
+    : result.error
+      ? "алгоритм остановлен"
+      : "алгоритм завершён";
+
+  const caption = $("caption");
+  caption.className = "caption";
+  if (!current) {
+    caption.textContent = "Предскажите результат и нажмите «шаг».";
+  } else if (current.error) {
+    caption.classList.add("error");
+    caption.textContent = `Команда ${position}: ${current.message}`;
+  } else if (finished) {
+    caption.classList.add("good");
+    caption.textContent = `Команда ${position}: ${current.message} Алгоритм сработал.`;
+  } else {
+    caption.textContent = `Команда ${position}: ${current.message}`;
+  }
 }
 
-$("step").addEventListener("click", () => {
+const canStep = () => position < result.trace.length;
+const step = () => {
   position += 1;
-  render();
-});
-$("run").addEventListener("click", () => {
-  position = runAlgorithm(commands).trace.length;
+};
+const player = autoRun($("play"), { canStep, step, onChange: render });
+
+$("step").addEventListener("click", () => {
+  player.stop();
+  if (canStep()) step();
   render();
 });
 $("reset").addEventListener("click", () => {
+  player.stop();
   position = 0;
   render();
 });
-$("wrong").addEventListener("click", () => {
-  commands = ["open", "take", "enter"];
-  position = 0;
-  render();
+const presetBar = presets($("presets"), PRESETS, (value) => {
+  commands = [...value];
+  restart();
 });
-$("correct").addEventListener("click", () => {
-  commands = ["take", "open", "enter"];
-  position = 0;
-  render();
-});
+presetBar.setActive(0);
+
 render();
-document.documentElement.dataset.ready = "1";
+ready();

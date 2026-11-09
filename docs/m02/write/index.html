@@ -3,100 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>write: вывод в консоль | 2.3 Чтение и запись</title>
-    <link rel="stylesheet" href="../../kit/course.css" />
-    <link rel="stylesheet" href="../../kit/io.css?v=height-2" />
-    <link rel="stylesheet" href="../../kit/embed.css?v=height-2" />
+    <title>write() и writeln()</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
   </head>
-  <body data-io-mode="output">
-    <main>
-      <header class="standalone">
-        <a href="../../">Интерактивные уроки</a>
-        <p class="eyebrow">2.3 Чтение и запись</p>
-        <h1 style="text-align: center">write: вывод в консоль</h1>
-        <p>
-          Измените текст и выполните программу по шагам. Сравните, где появится
-          следующий текст после write() и writeln().
-        </p>
-      </header>
-      <noscript
-        ><p>Для работы тренажёра включите JavaScript в браузере.</p></noscript
-      >
-      <section id="settings" class="panel" aria-labelledby="settings-title">
-        <h2 id="settings-title" style="text-align: center">
-          Что будем выводить
-        </h2>
-        <div class="settings">
-          <div>
-            <label
-              >text1 (до 24)<input id="text-1" value="Привет" maxlength="24"
-            /></label>
-            <label
-              >Вызов 1<select id="method-1">
-                <option value="write">write()</option>
-                <option value="writeln">writeln()</option>
-              </select></label
-            >
-          </div>
-          <div>
-            <label
-              >text2 (до 24)<input id="text-2" value="мир" maxlength="24"
-            /></label>
-            <label
-              >Вызов 2<select id="method-2">
-                <option value="write">write()</option>
-                <option value="writeln" selected>writeln()</option>
-              </select></label
-            >
-          </div>
-        </div>
-        <p class="muted standalone">
-          При изменении текста или метода выполнение начинается сначала. Пробелы
-          между словами программа сама не добавляет.
-        </p>
-      </section>
-      <div class="grid">
-        <section class="panel" aria-labelledby="code-title">
-          <h2 id="code-title" style="text-align: center">Программа</h2>
-          <div
-            id="program"
-            class="program"
-            role="region"
-            aria-label="Код программы"
-          ></div>
-          <div class="controls">
-            <button id="step" class="primary" type="button">Шаг</button>
-            <button id="run" type="button">Выполнить всё</button>
-            <button id="reset" type="button">Сначала</button>
-          </div>
-          <p id="status" role="status" aria-live="polite">
-            Нажмите «Шаг» или «Выполнить всё».
-          </p>
-        </section>
-        <section class="panel" aria-labelledby="output-title">
-          <h2 id="output-title" style="text-align: center">
-            Стандартный вывод stdout
-          </h2>
-          <div
-            id="output"
-            class="output"
-            role="region"
-            aria-label="Вывод программы"
-          ></div>
-          <p class="muted standalone">
-            Курсор показывает, где появится следующий текст.
-          </p>
-        </section>
-      </div>
+  <body>
+    <p class="eyebrow">Модуль 2 · урок 3</p>
+    <h1 style="text-align: center">Где окажется следующий текст?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
 
-      <footer class="standalone">
-        <p><a href="../read/">Перейти к чтению строки</a></p>
-        <p class="muted standalone">
-          Тренажёр показывает выполнение этих примеров. Вводимый текст хранится
-          только на этой странице.
-        </p>
-      </footer>
-    </main>
-    <script type="module" src="../../kit/io-app.js?v=height-2"></script>
+    <div class="panel row">
+      <button type="button" id="step">шаг</button>
+      <button type="button" class="btn-play" id="play">▶ до конца</button>
+      <button type="button" id="reset">сброс</button>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">Программа</p>
+        <ol class="code fill" id="code" aria-label="Код программы"></ol>
+      </div>
+      <div class="work__side">
+        <p class="label">Консоль</p>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+        ></pre>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=llm-1"></script>
   </body>
 </html>
