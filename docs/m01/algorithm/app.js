@@ -2,6 +2,7 @@ import { LABELS, runAlgorithm } from "./logic.js";
 import "../../kit/embed.js";
 
 const $ = (id) => document.getElementById(id);
+const embedded = document.body.classList.contains("embedded");
 let commands = ["take", "open", "enter"];
 let position = 0;
 
@@ -34,7 +35,8 @@ function render() {
       number.textContent = `${index + 1}.`;
       const label = document.createElement("span");
       label.className = "command-name";
-      label.textContent = LABELS[command];
+      label.textContent =
+        embedded && events[index] ? events[index].message : LABELS[command];
       row.append(number, label);
       for (const [delta, text] of [
         [-1, "↑"],
@@ -70,9 +72,9 @@ function render() {
     position === 0
       ? "Нажмите «Шаг» или «Выполнить всё»."
       : current.error
-        ? `Команда ${position} невыполнима. Измените порядок и начните сначала.`
+        ? "Измените порядок и начните сначала."
         : finished
-          ? "Герой внутри. Все три команды выполнены."
+          ? "Герой внутри. Готово."
           : `Выполнено команд: ${position} из 3.`;
   $("step").disabled = finished;
   $("run").disabled = finished;

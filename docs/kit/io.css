@@ -68,6 +68,7 @@ select {
 }
 .value {
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
   color: var(--green);
   font-family: ui-monospace, monospace;
 }
@@ -141,6 +142,30 @@ body.embedded #input-form label {
 }
 body.embedded .value {
   font-size: 13px;
+}
+body.embedded[data-io-mode="input"] .program {
+  font-size: 12px;
+}
+body.embedded[data-io-mode="input"] .grid {
+  margin-bottom: 0;
+}
+body.embedded[data-io-mode] main {
+  padding: 8px;
+}
+body.embedded[data-io-mode] .panel {
+  padding: 8px;
+}
+body.embedded[data-io-mode="output"] .output {
+  min-height: calc(4 * 1.4em + 18px);
+}
+body.embedded[data-io-mode="input"] .output {
+  min-height: calc(3 * 1.4em + 18px);
+}
+body.embedded .output.complete::after {
+  content: none;
+}
+body.embedded .input-value {
+  min-height: 3em;
 }
 @media (max-width: 620px) {
   .settings {

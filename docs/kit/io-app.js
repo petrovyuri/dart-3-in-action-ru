@@ -20,21 +20,31 @@ const calls = () =>
   }));
 
 function render() {
-  const statements = output
+  const declarations = output
     ? calls().map(
-        (call) => `  stdout.${call.method}(${dartString(call.text)});`,
+        (call, index) => `  final text${index + 1} = ${dartString(call.text)};`,
       )
+    : [];
+  const statements = output
+    ? calls().map((call, index) => `  stdout.${call.method}(text${index + 1});`)
     : [
         '  stdout.writeln("Введите данные");',
         "  final input = stdin.readLineSync();",
         "  print(input);",
       ];
-  const lines = ["import 'dart:io';", "", "void main() {", ...statements, "}"];
+  const lines = [
+    "import 'dart:io';",
+    "",
+    "void main() {",
+    ...declarations,
+    ...statements,
+    "}",
+  ];
   $("program").replaceChildren(
     ...lines.map((text, index) => {
       const line = document.createElement("div");
       line.textContent = text || " ";
-      const command = index - 3;
+      const command = index - 3 - declarations.length;
       line.className =
         "line" +
         (command < 0 || command >= statements.length ? " scaffold" : "") +
@@ -49,9 +59,10 @@ function render() {
     }),
   );
   $("output").textContent = state.output;
+  $("output").classList.toggle("complete", !output && state.done);
   if (!output) {
     $("value").textContent =
-      state.input === null ? "Ещё не получено" : dartString(state.input);
+      state.input === null ? "Ещё не получено" : `«${state.input}»`;
     $("stdin").disabled = !state.waiting;
     $("send").disabled = !state.waiting;
   }
@@ -59,14 +70,14 @@ function render() {
   $("run").disabled = state.done || state.waiting;
   $("status").textContent = state.done
     ? output
-      ? "Готово. Измените параметры или начните сначала."
-      : "Программа завершена. Можно начать сначала."
+      ? "Готово. Можно изменить параметры."
+      : "Готово. Можно начать сначала."
     : state.waiting
-      ? "Ожидание stdin. Введите строку и нажмите «Передать»."
+      ? "Введите строку и нажмите «Передать»."
       : state.position === 0
         ? "Нажмите «Шаг» или «Выполнить всё»."
         : !output && state.position === 2
-          ? "Строка в input. Следующий шаг выведет её."
+          ? "Строка получена. Выполните «Шаг»."
           : "Следующая команда выделена.";
 }
 
