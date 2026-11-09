@@ -1,0 +1,368 @@
+/* Общие стили интерактивов курса «Dart 3 в действии».
+   Палитра, размеры и компоненты повторяют демо курса «Математика LLM».
+   Одна вёрстка и для iframe в шаге Stepik, и для отдельной вкладки. */
+:root {
+  --bg: #0a0e1a;
+  --panel: #161b2e;
+  --panel-2: #1d2440;
+  --line: #2a3150;
+  --ink: #f5f7fa;
+  --muted: #9aa0a6;
+  --cyan: #22d3ee;
+  --purple: #a855f7;
+  --green: #34d399;
+  --orange: #f97316;
+  --yellow: #fbbf24;
+  --red: #ef4444;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font:
+    15px/1.45 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  padding: 14px 16px;
+}
+.mono,
+code,
+input,
+select,
+.code,
+.console,
+.readout {
+  font-family:
+    ui-monospace, "Cascadia Mono", Consolas, "DejaVu Sans Mono", monospace;
+}
+
+/* Внутри iframe страница занимает всю его высоту: свободное место получает
+   блок .fill (консоль, сцена), а не пустая полоса под виджетом.
+   Класс framed ставит ready() из kit/ui.js. В отдельной вкладке высота обычная. */
+html.framed body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+html.framed .fill {
+  flex: 1 1 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+h1 {
+  margin: 2px 0 12px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.panel:last-child {
+  margin-bottom: 0;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.row--spread {
+  justify-content: space-between;
+}
+
+/* Рабочая панель: слева программа, справа результат. На узком экране - столбиком,
+   и тогда свободную высоту получает нижний блок (консоль, сцена), а не верхний. */
+.work {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 12px;
+}
+.work__main,
+.work__side {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+@media (max-width: 560px) {
+  .work {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+}
+
+button {
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 11px;
+  cursor: pointer;
+}
+button:hover {
+  border-color: var(--cyan);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+button:disabled:hover {
+  border-color: var(--line);
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+}
+.chip[aria-pressed="true"] {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.btn-play {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.btn-play[aria-pressed="true"] {
+  background: var(--orange);
+  color: var(--bg);
+}
+.counter {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+/* Код программы с номерами строк. is-now - строка, которая только что выполнилась. */
+.code {
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  counter-reset: line;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.code li {
+  display: flex;
+  align-items: center;
+  min-height: 1.6em;
+  padding-right: 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.code li::before {
+  counter-increment: line;
+  content: counter(line);
+  flex: none;
+  width: 2.3em;
+  padding-right: 10px;
+  text-align: right;
+  color: var(--muted);
+}
+.code li.is-done::before {
+  color: var(--green);
+}
+.code li.is-now {
+  background: rgba(249, 115, 22, 0.18);
+  box-shadow: inset 3px 0 var(--orange);
+}
+.code li.is-wait {
+  background: rgba(34, 211, 238, 0.12);
+  box-shadow: inset 3px 0 var(--cyan);
+}
+.code .ind {
+  flex: none;
+  width: 2ch;
+}
+.code .kw {
+  color: var(--purple);
+}
+.code .str {
+  color: var(--green);
+}
+
+/* Поля ввода, в том числе прямо внутри строки кода. */
+.field {
+  min-width: 0;
+  padding: 3px 6px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.field:disabled {
+  opacity: 0.5;
+}
+.field.is-invalid {
+  border-color: var(--red);
+  color: var(--red);
+}
+select.field {
+  padding: 2px 4px;
+  color: var(--cyan);
+}
+
+/* Консоль: вывод программы. Курсор показывает, где появится следующий текст. */
+.console {
+  margin: 0;
+  min-height: 4.4em;
+  padding: 6px 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  tab-size: 4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.console.has-cursor::after {
+  content: "▌";
+  color: var(--cyan);
+}
+/* То, что ученик набрал в терминале (эхо ввода), и строка ввода в консоли. */
+.console .echo {
+  color: var(--cyan);
+}
+.stdin-line {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: normal;
+}
+.stdin-line button {
+  flex: none;
+  padding: 3px 8px;
+}
+
+.readout {
+  margin: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.caption {
+  margin: 0;
+  min-height: 1.45em;
+  font-size: 14px;
+  color: var(--yellow);
+}
+.caption.error,
+.error {
+  color: var(--red);
+}
+.good {
+  color: var(--green);
+}
+.bad {
+  color: var(--red);
+}
+.muted {
+  color: var(--muted);
+}
+.home-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--cyan);
+  text-decoration: none;
+}
+.home-link:hover,
+.home-link:focus-visible {
+  text-decoration: underline;
+}
+noscript .panel {
+  color: var(--red);
+}
+
+/* Узкий iframe (телефон): та же разметка в одну колонку, только плотнее.
+   Блоки .wide-only повторяют то, что уже видно (подпись «Программа», журнал),
+   и скрываются, чтобы виджет поместился в ту же высоту iframe без прокрутки.
+   Граница 560 px совпадает с переходом .work на одну колонку. */
+@media (max-width: 560px) {
+  body {
+    padding: 10px;
+  }
+  h1 {
+    margin-bottom: 10px;
+  }
+  .panel {
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  .work {
+    gap: 8px;
+  }
+  button {
+    padding: 5px 9px;
+  }
+  .code,
+  .console,
+  .field {
+    font-size: 12.5px;
+  }
+  .code li {
+    min-height: 1.5em;
+  }
+  .code li::before {
+    width: 1.6em;
+    padding-right: 7px;
+  }
+  .wide-only {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .counter {
+    display: none;
+  }
+  /* Строки кода урока (до 37 знаков) помещаются целиком даже в iframe 320 px. */
+  .code {
+    font-size: 12px;
+  }
+  .code li {
+    padding-right: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
