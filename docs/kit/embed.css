@@ -78,3 +78,19 @@ body.embedded .console {
     12px/1.4 ui-monospace,
     monospace;
 }
+body.embedded.algorithm-demo main {
+  padding: 8px;
+}
+body.embedded.algorithm-demo .grid {
+  margin: 0 0 8px;
+}
+body.embedded.algorithm-demo .panel {
+  padding: 8px;
+}
+body.embedded.algorithm-demo .state {
+  margin: 6px 0;
+}
+body.embedded.algorithm-demo .console,
+body.embedded.algorithm-demo #status {
+  min-height: 0;
+}
