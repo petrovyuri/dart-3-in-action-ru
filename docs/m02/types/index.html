@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Типы переменных</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
+    <style>
+      /* Строка с ошибкой компиляции: Dart не запускает программу. */
+      .code li.is-error {
+        background: rgba(239, 68, 68, 0.16);
+        box-shadow: inset 3px 0 var(--red);
+      }
+      .code li.is-error::before {
+        color: var(--red);
+      }
+      /* Список шириной по выбранному значению (--len знаков) плюс стрелка.
+         Если строка всё же не поместится, она перейдёт на вторую строку. */
+      .code li {
+        flex-wrap: wrap;
+      }
+      .code select.field {
+        width: calc(var(--len, 7) * 1ch + 2.4em);
+      }
+      @media (max-width: 400px) {
+        .code .ind {
+          width: 1ch;
+        }
+        .code select.field {
+          width: calc(var(--len, 7) * 1ch + 2em);
+          padding: 1px 2px;
+          font-size: 12px;
+        }
+        .code li::before {
+          width: 1.3em;
+          padding-right: 5px;
+        }
+      }
+      .console .err {
+        color: var(--red);
+      }
+      /* Тип переменной стоит в одной строке с подписью консоли: так виджет ниже. */
+      .side-head {
+        gap: 2px 8px;
+      }
+      .readout {
+        color: var(--cyan);
+        font-size: 13px;
+      }
+      @media (max-width: 560px) {
+        .readout {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">Модуль 2 · урок 4</p>
+    <h1 style="text-align: center">Подойдёт ли значение типу?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
+
+    <div class="panel row row--spread">
+      <div class="row" id="presets"></div>
+      <div class="row">
+        <button type="button" id="step">шаг</button>
+        <button type="button" class="btn-play" id="play">▶ до конца</button>
+        <button type="button" id="reset">сброс</button>
+        <span class="counter" id="counter"></span>
+      </div>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">Программа</p>
+        <ol class="code fill" id="code" aria-label="Код программы"></ol>
+      </div>
+      <div class="work__side">
+        <div class="row row--spread side-head">
+          <p class="label">Консоль</p>
+          <p class="readout" id="type" aria-live="polite"></p>
+        </div>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+        ></pre>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=llm-1"></script>
+  </body>
+</html>
