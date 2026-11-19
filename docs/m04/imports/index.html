@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Импорт файлов</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
+    <style>
+      /* Вызов, который Dart не скомпилирует. */
+      .code li.is-error {
+        background: rgba(239, 68, 68, 0.16);
+        box-shadow: inset 3px 0 var(--red);
+      }
+      .code li.is-error::before {
+        color: var(--red);
+      }
+      .console .err {
+        color: var(--red);
+      }
+      /* Откуда возьмутся sum и superSum. */
+      .readout {
+        color: var(--cyan);
+      }
+      @media (max-width: 400px) {
+        .code .ind {
+          width: 1ch;
+        }
+        .code select.field {
+          padding: 1px 2px;
+          font-size: 12px;
+        }
+        .code li::before {
+          width: 1.5em;
+          padding-right: 5px;
+        }
+        /* Строки import и ошибки компилятора переносятся: плотнее строки кода
+           и консоли, чтобы виджет поместился в iframe. */
+        h1 {
+          margin-bottom: 6px;
+        }
+        .code li {
+          min-height: 1.35em;
+          line-height: 1.25;
+        }
+        .console {
+          padding: 4px 8px;
+          line-height: 1.35;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">Модуль 4 · урок 7</p>
+    <h1 style="text-align: center">Откуда возьмётся функция?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
+
+    <div class="panel row row--spread">
+      <div class="row" id="presets"></div>
+      <div class="row">
+        <button type="button" id="step">шаг</button>
+        <button type="button" class="btn-play" id="play">▶ до конца</button>
+        <button type="button" id="reset">сброс</button>
+        <span class="counter" id="counter"></span>
+      </div>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">main.dart</p>
+        <ol class="code fill" id="code" aria-label="Код main.dart"></ol>
+      </div>
+      <div class="work__side">
+        <p class="label wide-only">Консоль</p>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+        ></pre>
+        <p class="readout" id="where" aria-live="polite"></p>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=llm-1"></script>
+  </body>
+</html>
