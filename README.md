@@ -23,3 +23,4 @@
 - **4.14 Обмен данными, изучаем JSON, jsonEncode/jsonDecode**: [что вернёт jsonDecode](docs/m04/json/).
 - **4.16 Анонимные функции в Dart**: [какую функцию передали](docs/m04/lambda/).
 - **4.17 Функции обратного вызова (callback)**: [сколько раз вызовут callback](docs/m04/callback/).
+- **4.18 Records**: [что лежит в $1](docs/m04/records/).
