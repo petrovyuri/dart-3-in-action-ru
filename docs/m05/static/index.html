@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ключевое слово static</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
+    <style>
+      /* Список шириной по выбранному варианту (--len знаков) плюс стрелка. */
+      .code select.field {
+        width: calc(var(--len, 7) * 1ch + 2.4em);
+      }
+      /* Строка, на которой программа упала, и текст ошибки. */
+      .code li.is-error {
+        background: rgba(239, 68, 68, 0.16);
+        box-shadow: inset 3px 0 var(--red);
+      }
+      .code li.is-error::before {
+        color: var(--red);
+      }
+      .console .err {
+        color: var(--red);
+      }
+      /* Поле класса и поля объектов: две строки. */
+      .readout {
+        color: var(--cyan);
+        white-space: pre-line;
+      }
+      @media (max-width: 400px) {
+        .code .ind {
+          width: 1ch;
+        }
+        .code select.field {
+          width: calc(var(--len, 7) * 1ch + 3em);
+          padding: 1px 2px;
+          font-size: 12px;
+        }
+        .code li::before {
+          width: 1.3em;
+          padding-right: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">Модуль 5 · урок 2</p>
+    <h1 style="text-align: center">Общее или своё?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
+
+    <div class="panel row">
+      <button type="button" id="step">шаг</button>
+      <button type="button" class="btn-play" id="play">▶ до конца</button>
+      <button type="button" id="reset">сброс</button>
+      <span class="counter" id="counter"></span>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">Программа</p>
+        <ol class="code fill" id="code" aria-label="Код программы"></ol>
+      </div>
+      <div class="work__side">
+        <p class="label wide-only">Консоль</p>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+        ></pre>
+        <p class="readout" id="state" aria-live="polite"></p>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=llm-1"></script>
+  </body>
+</html>
