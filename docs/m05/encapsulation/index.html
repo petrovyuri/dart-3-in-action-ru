@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Как прочитать имя героя?</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
+    <style>
+      .file[aria-pressed="true"] {
+        color: var(--cyan);
+        border-color: var(--cyan);
+      }
+
+      .console.error {
+        color: var(--red);
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">Модуль 5 · урок 5</p>
+    <h1 style="text-align: center">Как прочитать имя героя?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
+
+    <div class="panel row row--spread">
+      <div class="row" role="group" aria-label="Файлы программы">
+        <button type="button" class="file" id="show-hero" aria-pressed="false">
+          hero.dart
+        </button>
+        <button type="button" class="file" id="show-main" aria-pressed="true">
+          main.dart
+        </button>
+      </div>
+      <div class="row">
+        <button type="button" class="btn-play" id="run">▶ Запустить</button>
+        <button type="button" id="reset">Сбросить</button>
+      </div>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <ol
+          class="code fill"
+          id="hero-code"
+          aria-label="Код hero.dart"
+          hidden
+        ></ol>
+        <ol class="code fill" id="main-code" aria-label="Код main.dart"></ol>
+      </div>
+      <div class="work__side">
+        <p class="label wide-only">Консоль</p>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+          aria-live="polite"
+        ></pre>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
