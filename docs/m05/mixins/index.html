@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Какой миксин сработает?</title>
+    <link rel="stylesheet" href="../../kit/kit.css?v=llm-1" />
+    <style>
+      .console.error {
+        color: var(--red);
+      }
+
+      @media (max-width: 560px) {
+        .code li {
+          min-height: 1.35em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">Какой миксин сработает?</h1>
+    <noscript
+      ><div class="panel">Для интерактива нужен JavaScript.</div></noscript
+    >
+
+    <div class="panel row row--spread">
+      <div
+        class="row"
+        id="presets"
+        role="group"
+        aria-label="Порядок миксинов"
+      ></div>
+      <div class="row">
+        <button type="button" class="btn-play" id="run">▶ Запустить</button>
+        <button type="button" id="reset">Сбросить</button>
+      </div>
+    </div>
+
+    <div class="panel work fill">
+      <div class="work__main">
+        <p class="label wide-only">Программа</p>
+        <ol class="code fill" id="code" aria-label="Код программы"></ol>
+      </div>
+      <div class="work__side">
+        <p class="label wide-only">Консоль</p>
+        <pre
+          class="console has-cursor fill"
+          id="console"
+          aria-label="Вывод программы"
+          aria-live="polite"
+        ></pre>
+        <p class="caption" id="caption" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
